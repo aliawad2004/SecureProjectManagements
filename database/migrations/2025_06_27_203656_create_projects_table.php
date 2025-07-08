@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->foreignId('team_id')->constrained('teams')->onDelete('cascade');
             $table->string('name');
             $table->text('description')->nullable();
-            $table->string('status')->default('pending'); // e.g., pending, in_progress, completed
+            $table->string('status')->default('pending'); 
             $table->date('due_date')->nullable();
             $table->foreignId('created_by_user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
