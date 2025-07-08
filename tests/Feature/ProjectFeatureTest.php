@@ -157,15 +157,7 @@ class ProjectFeatureTest extends TestCase
 
     public function test_project_manager_can_view_their_projects(): void
     {
-        // No other projects created in the main team for this PM, so they should only see their own.
-        // The projectByOwner is in the same team, but PM only sees projects where they are creator/manager/member
-        // $this->pmUser is a member of $this->team, so they see all projects in $this->team.
-        // To ensure they only see THEIR project, we need to make sure the other project in the team is NOT accessible to them directly.
-        // However, the policy allows PMs to see projects in teams they belong to.
-        // So, for this test, let's keep the assertion accurate based on the code's behavior.
-        // $this->projectByOwner is in $this->team. $this->pmUser is a member of $this->team.
-        // So $this->pmUser WILL see both $this->projectByPm and $this->projectByOwner.
-        // The expectation should be 2, not 1.
+       
         $response = $this->actingAs($this->pmUser, 'sanctum')->getJson('/api/projects');
 
         $response->assertStatus(200)
@@ -183,13 +175,11 @@ class ProjectFeatureTest extends TestCase
 
     public function test_member_can_view_projects_they_belong_to(): void
     {
-        // Same logic as above: memberUser is part of $this->team, so they see projects in $this->team.
-        // They see both $this->projectByPm and $this->projectByOwner.
-        // The expectation should be 2, not 1.
+        
         $response = $this->actingAs($this->memberUser, 'sanctum')->getJson('/api/projects');
 
         $response->assertStatus(200)
-            ->assertJsonCount(2, 'projects'); // Corrected expectation: Member sees both PM's and owner's project (as they are in the same team)
+            ->assertJsonCount(2, 'projects'); 
     }
 
     // --- Get Specific Project Tests ---
@@ -377,7 +367,7 @@ class ProjectFeatureTest extends TestCase
 
     public function test_cannot_remove_sole_project_manager_from_project(): void
     {
-        // Project manager is the only project_manager in projectByPm currently
+        
         $response = $this->actingAs($this->pmUser, 'sanctum')->deleteJson('/api/projects/' . $this->projectByPm->id . '/members/' . $this->pmUser->id);
 
         $response->assertStatus(403)
