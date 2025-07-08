@@ -6,7 +6,7 @@ use Tests\TestCase;
 use App\Models\Task;
 use App\Models\Project;
 use App\Models\Notification;
-use App\Models\User; // Required for Notification factory
+use App\Models\User; 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Carbon\Carbon;
 
