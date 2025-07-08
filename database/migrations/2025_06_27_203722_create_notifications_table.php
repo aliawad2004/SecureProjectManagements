@@ -11,10 +11,10 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('notifications', function (Blueprint $table) {
-            $table->uuid('id')->primary(); // Using UUID for notifications
+            $table->uuid('id')->primary(); 
             $table->string('type');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Recipient of the notification
-            $table->text('data'); // JSON data for notification details
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); 
+            $table->text('data'); 
             $table->timestamp('read_at')->nullable();
             $table->timestamps();
         });
