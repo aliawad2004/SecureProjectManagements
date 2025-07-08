@@ -13,12 +13,12 @@ return new class extends Migration {
         Schema::create('attachments', function (Blueprint $table) {
             $table->id();
             $table->string('path');
-            $table->string('disk'); // e.g., 'public', 's3'
+            $table->string('disk'); 
             $table->string('file_name');
-            $table->unsignedBigInteger('file_size'); // Size in bytes
+            $table->unsignedBigInteger('file_size'); 
             $table->string('mime_type');
-            $table->morphs('attachable'); // Adds attachable_id and attachable_type
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // <--- أضف هذا السطر هنا
+            $table->morphs('attachable'); 
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); 
             $table->timestamps();
         });
     }
