@@ -20,8 +20,8 @@ class CommentFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(), // <--- Ensure this is explicitly set
-            'content' => $this->faker->sentence, // <--- Ensure content is provided
+            'user_id' => User::factory(), 
+            'content' => $this->faker->sentence, 
             'commentable_id' => Project::factory(),
             'commentable_type' => Project::class,
         ];
