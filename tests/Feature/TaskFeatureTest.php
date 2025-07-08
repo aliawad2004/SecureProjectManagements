@@ -7,17 +7,17 @@ use App\Models\User;
 use App\Models\Team;
 use App\Models\Project;
 use App\Models\Task;
-use App\Mail\TaskAssignedMail; // To assert mail is sent
-use App\Notifications\TaskAssignedNotification; // To assert notification is created
-use App\Notifications\TaskCompletedNotification; // To assert task completion notification
+use App\Mail\TaskAssignedMail; 
+use App\Notifications\TaskAssignedNotification; 
+use App\Notifications\TaskCompletedNotification; 
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Queue; // To fake queues
-use Illuminate\Support\Facades\Mail;   // To fake mail
-use Illuminate\Support\Facades\Notification; // To fake notifications
-use Illuminate\Support\Facades\Event; // To fake events
-use Carbon\Carbon; // For dates
+use Illuminate\Support\Facades\Queue; 
+use Illuminate\Support\Facades\Mail;  
+use Illuminate\Support\Facades\Notification; 
+use Illuminate\Support\Facades\Event; 
+use Carbon\Carbon; 
 
 class TaskFeatureTest extends TestCase
 {
@@ -45,7 +45,7 @@ class TaskFeatureTest extends TestCase
         Queue::fake();
         Mail::fake();
         Notification::fake();
-        Event::fake(); // Fake events as we have listeners attached to them
+        Event::fake(); 
 
         // Create users
         $this->adminUser = User::factory()->create(['email' => 'admin@test.com', 'password' => Hash::make('password'), 'role' => 'admin']);
