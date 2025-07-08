@@ -7,11 +7,11 @@ use App\Models\Task;
 use App\Models\Attachment;
 use App\Models\User;
 use App\Models\Project;
-use App\Events\TaskCompleted; // For TaskObserver
+use App\Events\TaskCompleted; 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Event; // To fake events
-use Illuminate\Support\Facades\Storage; // To fake storage
-use Illuminate\Support\Facades\Log; // To verify logs
+use Illuminate\Support\Facades\Event; 
+use Illuminate\Support\Facades\Storage; 
+use Illuminate\Support\Facades\Log; 
 
 class ObserverTest extends TestCase
 {
