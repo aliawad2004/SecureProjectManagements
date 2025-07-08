@@ -13,8 +13,8 @@ return new class extends Migration {
         Schema::create('team_user', function (Blueprint $table) {
             $table->foreignId('team_id')->constrained('teams')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('role')->default('member'); // e.g., team_admin, member
-            $table->primary(['team_id', 'user_id']); // Composite primary key
+            $table->string('role')->default('member'); 
+            $table->primary(['team_id', 'user_id']);
             $table->timestamps();
         });
     }
