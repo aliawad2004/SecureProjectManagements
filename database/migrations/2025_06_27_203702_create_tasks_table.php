@@ -16,8 +16,8 @@ return new class extends Migration {
             $table->foreignId('assigned_to_user_id')->nullable()->constrained('users')->onDelete('set null');
             $table->string('name');
             $table->text('description')->nullable();
-            $table->string('status')->default('open'); // e.g., open, in_progress, completed, cancelled
-            $table->string('priority')->default('medium'); // e.g., low, medium, high
+            $table->string('status')->default('open'); 
+            $table->string('priority')->default('medium'); 
             $table->date('due_date')->nullable();
             $table->timestamps();
         });
