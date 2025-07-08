@@ -43,10 +43,7 @@ class TeamFeatureTest extends TestCase
             ->assertJson(['message' => 'This action is unauthorized.']);
         $this->assertDatabaseMissing('teams', ['name' => 'Owner First Team Attempt']); // Ensure no team is created
     }
-    // NEW TEST: First time owner creation (if allowed) - This is tricky.
-    // If a new user (with no existing teams) is created, and they are not admin/pm,
-    // they cannot create a team based on current policy.
-    // This test below will verify that.
+   
 
     public function test_project_manager_can_create_team(): void // Renamed from admin for clarity
     {
@@ -105,8 +102,7 @@ class TeamFeatureTest extends TestCase
     {
         // Ensure ownerUser has an owned team that admin can see
         Team::factory()->create(['owner_id' => $this->ownerUser->id]); // This is 1 team
-        Team::factory()->count(3)->create(); // Create 3 more teams with random owners
-        // Total teams now: 1 (owned by ownerUser) + 3 (random) = 4 teams
+        Team::factory()->count(3)->create(); 
 
         $response = $this->actingAs($this->adminUser, 'sanctum')->getJson('/api/teams');
 
