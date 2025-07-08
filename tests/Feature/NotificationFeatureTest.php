@@ -4,11 +4,11 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\User;
-use App\Models\Notification; // Import the Notification model
+use App\Models\Notification; 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Notification as NotificationFacade; // Alias for clarity
-use Carbon\Carbon; // For dates
+use Illuminate\Support\Facades\Notification as NotificationFacade; 
+use Carbon\Carbon; 
 
 class NotificationFeatureTest extends TestCase
 {
@@ -34,8 +34,8 @@ class NotificationFeatureTest extends TestCase
     private function createNotificationForUser(User $user, bool $read = false): Notification
     {
         return Notification::create([
-            'id' => \Illuminate\Support\Str::uuid(), // Notifications use UUIDs
-            'type' => 'App\\Notifications\\TestNotification', // A dummy notification type
+            'id' => \Illuminate\Support\Str::uuid(), 
+            'type' => 'App\\Notifications\\TestNotification',
             'user_id' => $user->id,
             'data' => ['message' => 'This is a test notification for ' . $user->name],
             'read_at' => $read ? Carbon::now() : null,
@@ -52,7 +52,7 @@ class NotificationFeatureTest extends TestCase
         $response = $this->actingAs($this->adminUser, 'sanctum')->getJson('/api/notifications');
 
         $response->assertStatus(200)
-                 ->assertJsonCount(2, 'notifications'); // Should see all notifications
+                 ->assertJsonCount(2, 'notifications'); 
     }
 
     public function test_admin_can_view_all_unread_notifications(): void
