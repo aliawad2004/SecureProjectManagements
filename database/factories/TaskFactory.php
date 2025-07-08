@@ -18,13 +18,13 @@ class TaskFactory extends Factory
     public function definition(): array
     {
         return [
-            'project_id' => \App\Models\Project::factory(), // <--- Ensure this creates a Project
+            'project_id' => \App\Models\Project::factory(), 
             'name' => $this->faker->unique()->words(3, true) . ' Task',
             'description' => $this->faker->sentence,
             'status' => $this->faker->randomElement(['open', 'in_progress', 'completed', 'cancelled']),
             'priority' => $this->faker->randomElement(['low', 'medium', 'high']),
             'due_date' => Carbon::now()->addDays(rand(1, 14)),
-            'assigned_to_user_id' => \App\Models\User::factory(), // <--- Ensure this creates a User
+            'assigned_to_user_id' => \App\Models\User::factory(), 
         ];
     }
 }
