@@ -10,10 +10,10 @@ use App\Models\Task;
 use App\Models\Comment;
 use App\Models\Attachment;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\UploadedFile; // For faking file uploads
+use Illuminate\Http\UploadedFile; 
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage; // To fake storage
-use Illuminate\Support\Facades\Log; // For debugging during testing (optional)
+use Illuminate\Support\Facades\Storage; 
+use Illuminate\Support\Facades\Log; 
 
 class AttachmentFeatureTest extends TestCase
 {
@@ -43,7 +43,6 @@ class AttachmentFeatureTest extends TestCase
     {
         parent::setUp();
 
-        // Fake the storage disk to prevent actual file writes
         Storage::fake('local');
 
         // Create users
@@ -155,7 +154,7 @@ class AttachmentFeatureTest extends TestCase
         ]);
 
         $response->assertStatus(403);
-        Storage::disk('local')->assertMissing($file->hashName()); // Assert file was NOT stored
+        Storage::disk('local')->assertMissing($file->hashName()); 
     }
 
     public function test_cannot_upload_attachment_to_non_existent_resource(): void
@@ -164,7 +163,7 @@ class AttachmentFeatureTest extends TestCase
         $response = $this->actingAs($this->pmUser, 'sanctum')->postJson('/api/attachments', [
             'file' => $file,
             'attachable_type' => 'project',
-            'attachable_id' => 99999, // Non-existent ID
+            'attachable_id' => 99999,
         ]);
 
         $response->assertStatus(422)
@@ -175,7 +174,7 @@ class AttachmentFeatureTest extends TestCase
     public function test_cannot_upload_too_large_file(): void
     {
         // Max size is 10240 KB (10 MB) defined in StoreAttachmentRequest
-        $file = UploadedFile::fake()->create('large.pdf', 10241); // 10241 KB
+        $file = UploadedFile::fake()->create('large.pdf', 10241); 
         $response = $this->actingAs($this->pmUser, 'sanctum')->postJson('/api/attachments', [
             'file' => $file,
             'attachable_type' => 'project',
@@ -189,7 +188,6 @@ class AttachmentFeatureTest extends TestCase
 
     public function test_cannot_upload_unsupported_file_type(): void
     {
-        // Allowed mimes are: jpeg,png,gif,pdf,doc,docx,xlsx,pptx,txt,zip,rar
         $file = UploadedFile::fake()->create('script.exe', 100);
         $response = $this->actingAs($this->pmUser, 'sanctum')->postJson('/api/attachments', [
             'file' => $file,
@@ -268,7 +266,7 @@ class AttachmentFeatureTest extends TestCase
             'attachable_type' => get_class($this->project),
         ]);
 
-        $response = $this->actingAs($this->adminUser, 'sanctum')->get('/api/attachments/' . $attachment->id); // Use get() not getJson() for file downloads
+        $response = $this->actingAs($this->adminUser, 'sanctum')->get('/api/attachments/' . $attachment->id);
 
         $response->assertStatus(200)
                  ->assertHeader('Content-Disposition', 'attachment; filename="admin_test.txt"');
@@ -333,7 +331,7 @@ class AttachmentFeatureTest extends TestCase
         ]);
 
         $response->assertStatus(403);
-        $this->assertDatabaseHas('attachments', ['id' => $attachment->id, 'file_name' => $attachment->file_name]); // Should not be updated
+        $this->assertDatabaseHas('attachments', ['id' => $attachment->id, 'file_name' => $attachment->file_name]);
     }
 
     // --- Delete Attachment Tests ---
@@ -393,14 +391,12 @@ class AttachmentFeatureTest extends TestCase
         $response = $this->actingAs($this->unauthorizedUser, 'sanctum')->deleteJson('/api/attachments/' . $attachment->id);
 
         $response->assertStatus(403);
-        Storage::disk('local')->assertExists($filePath); // Assert physical file was NOT deleted
+        Storage::disk('local')->assertExists($filePath); 
     }
 
     public function test_upload_rate_limiting(): void
     {
-        // Set up a custom rate limiter for uploads in AppServiceProvider for testing purposes
-        // This test assumes a rate limit of 10 requests per minute by default for 'uploads'
-        // In AppServiceProvider, configure it for example to Limit::perMinute(1) or Limit::perMinute(2) for easier testing
+        
 
         // Consume the allowed requests
         for ($i = 0; $i < 10; $i++) {
