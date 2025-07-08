@@ -18,8 +18,8 @@ class TeamFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->unique()->company, // <--- تأكد من وجود هذا السطر
-            'owner_id' => \App\Models\User::factory(), // This ensures an owner is created for the team
+            'name' => $this->faker->unique()->company, 
+            'owner_id' => \App\Models\User::factory(), 
         ];
     }
 }
