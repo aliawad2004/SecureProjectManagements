@@ -8,8 +8,8 @@ use App\Models\Team;
 use App\Models\Project;
 use App\Models\Task;
 use App\Models\Comment;
-use App\Events\CommentCreated; // To assert event is dispatched
-use App\Notifications\NewCommentNotification; // To assert notification is created
+use App\Events\CommentCreated; 
+use App\Notifications\NewCommentNotification; 
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
@@ -88,11 +88,10 @@ class CommentFeatureTest extends TestCase
         ]);
 
         $response->assertStatus(201)
-            // <--- التعديل هنا: تطهير المحتوى المتوقع
-            ->assertJsonFragment(['content' => Purifier::clean($commentContent)]); // Assert on sanitized content
+            ->assertJsonFragment(['content' => Purifier::clean($commentContent)]); 
 
         $this->assertDatabaseHas('comments', [
-            'content' => Purifier::clean($commentContent), // Assert on sanitized content in DB
+            'content' => Purifier::clean($commentContent), 
             'user_id' => $this->pmUser->id,
             'commentable_id' => $this->project->id,
             'commentable_type' => get_class($this->project),
@@ -102,7 +101,7 @@ class CommentFeatureTest extends TestCase
         Event::assertDispatched(CommentCreated::class, function ($event) {
             return $event->comment->commentable_id === $this->project->id;
         });
-        Notification::assertSentTo($this->memberUser, NewCommentNotification::class); // Member should be notified
+        Notification::assertSentTo($this->memberUser, NewCommentNotification::class);
     }
 
     public function test_project_manager_can_add_comment_to_task(): void
@@ -115,21 +114,21 @@ class CommentFeatureTest extends TestCase
         ]);
 
         $response->assertStatus(201)
-            ->assertJsonFragment(['content' => Purifier::clean($commentContent)]); // Assert on sanitized content
+            ->assertJsonFragment(['content' => Purifier::clean($commentContent)]); 
 
         $this->assertDatabaseHas('comments', [
-            'content' => Purifier::clean($commentContent), // Assert on sanitized content in DB
+            'content' => Purifier::clean($commentContent), 
             'user_id' => $this->pmUser->id,
             'commentable_id' => $this->task->id,
             'commentable_type' => get_class($this->task),
         ]);
-        Notification::assertSentTo($this->memberUser, NewCommentNotification::class); // Task assignee should be notified
+        Notification::assertSentTo($this->memberUser, NewCommentNotification::class); \
     }
 
     public function test_comment_content_is_sanitized(): void
     {
         $maliciousContent = 'Hello <script>alert("XSS");</script> world!';
-        $expectedContent = Purifier::clean($maliciousContent); // Get the expected sanitized content
+        $expectedContent = Purifier::clean($maliciousContent); 
 
         $response = $this->actingAs($this->pmUser, 'sanctum')->postJson('/api/comments', [
             'content' => $maliciousContent,
@@ -147,7 +146,7 @@ class CommentFeatureTest extends TestCase
 
     public function test_unauthorized_user_cannot_add_comment(): void
     {
-        $unauthorizedUser = User::factory()->create(); // Not related to the project/team
+        $unauthorizedUser = User::factory()->create(); 
         $response = $this->actingAs($unauthorizedUser, 'sanctum')->postJson('/api/comments', [
             'content' => 'Unauthorized comment.',
             'commentable_type' => 'project',
@@ -173,11 +172,10 @@ class CommentFeatureTest extends TestCase
 
     public function test_admin_can_view_all_comments(): void
     {
-        // Create comments specifically for this project
         Comment::factory()->count(2)->create([
             'commentable_id' => $this->project->id,
             'commentable_type' => get_class($this->project),
-            'user_id' => $this->pmUser->id, // Ensure user_id is provided by factory or explicitly
+            'user_id' => $this->pmUser->id, 
         ]);
         // Create a comment for another resource (e.g., task)
         Comment::factory()->count(1)->create([
