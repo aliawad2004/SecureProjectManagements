@@ -2,11 +2,11 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase; // Use Tests\TestCase for database interaction (even if light)
+use Tests\TestCase; 
 use App\Models\User;
 use App\Models\Team;
 use App\Models\Project;
-use Illuminate\Foundation\Testing\RefreshDatabase; // Required for database operations
+use Illuminate\Foundation\Testing\RefreshDatabase; 
 
 class UserAuthHelpersTest extends TestCase
 {
