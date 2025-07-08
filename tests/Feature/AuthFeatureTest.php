@@ -7,7 +7,7 @@ use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Sanctum\Sanctum; // <--- تأكد من استيراد Sanctum (الـ Facade)
+use Laravel\Sanctum\Sanctum; 
 
 class AuthFeatureTest extends TestCase
 {
@@ -135,14 +135,9 @@ class AuthFeatureTest extends TestCase
             'token' => $hashedToken,
         ]);
 
-        // <--- التعديلات الجديدة هنا: بديل لـ Auth::setUser(null);
-        // Forget the current user from all guards, which should clear the authenticated state.
-        Auth::logout(); // This method specifically clears the authenticated user from the session and current request.
-        // It's typically used for web guards, but in tests, it often helps reset the state.
-        // Also, it implicitly calls Auth::forgetGuards() and similar reset methods.
-        // If still fails, try explicitly setting resolved guards to empty array:
-        // Auth::setResolvedGuards([]);
-        // <--- نهاية التعديلات
+       
+        Auth::logout();
+       
 
         // 4. Verify the user is actually logged out by trying to access a protected route with the revoked token
         $responseProtected = $this->withHeaders([
@@ -159,7 +154,7 @@ class AuthFeatureTest extends TestCase
         for ($i = 0; $i < 5; $i++) {
             $response = $this->postJson('/api/login', [
                 'email' => $this->memberUser->email,
-                'password' => 'wrong-password', // Use wrong password to keep trying
+                'password' => 'wrong-password', 
             ]);
             $response->assertStatus(401);
         }
