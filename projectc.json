@@ -1,0 +1,1559 @@
+{
+    "info": {
+        "_postman_id": "YOUR_FULL_COLLECTION_ID",
+        "name": "Secure & Collaborative Project Management (Full)",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "0. Authentication & User Management",
+            "item": [
+                {
+                    "name": "Login Admin User",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "pm.environment.set(\"admin_token\", jsonData.access_token);"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\": \"admin@example.com\",\n    \"password\": \"password\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/login",
+                            "host": ["{{base_url}}"],
+                            "path": ["login"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create User (by Admin)",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "if (jsonData.user) {",
+                                    "    if (jsonData.user.email === 'owner@example.com') { pm.environment.set(\"owner_user_id\", jsonData.user.id); }",
+                                    "    if (jsonData.user.email === 'pm@example.com') { pm.environment.set(\"pm_user_id\", jsonData.user.id); }",
+                                    "    if (jsonData.user.email === 'member@example.com') { pm.environment.set(\"member_user_id\", jsonData.user.id); }",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Team Owner\",\n    \"email\": \"owner@example.com\",\n    \"password\": \"password\",\n    \"role\": \"member\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/users",
+                            "host": ["{{base_url}}"],
+                            "path": ["users"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create User (PM by Admin)",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "if (jsonData.user) {",
+                                    "    if (jsonData.user.email === 'pm@example.com') { pm.environment.set(\"pm_user_id\", jsonData.user.id); }",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Project Manager\",\n    \"email\": \"pm@example.com\",\n    \"password\": \"password\",\n    \"role\": \"project_manager\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/users",
+                            "host": ["{{base_url}}"],
+                            "path": ["users"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create User (Member by Admin)",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "if (jsonData.user) {",
+                                    "    if (jsonData.user.email === 'member@example.com') { pm.environment.set(\"member_user_id\", jsonData.user.id); }",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Regular Member\",\n    \"email\": \"member@example.com\",\n    \"password\": \"password\",\n    \"role\": \"member\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/users",
+                            "host": ["{{base_url}}"],
+                            "path": ["users"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Login Team Owner",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "pm.environment.set(\"owner_token\", jsonData.access_token);"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\": \"owner@example.com\",\n    \"password\": \"password\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/login",
+                            "host": ["{{base_url}}"],
+                            "path": ["login"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Login Project Manager",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "pm.environment.set(\"pm_token\", jsonData.access_token);"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\": \"pm@example.com\",\n    \"password\": \"password\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/login",
+                            "host": ["{{base_url}}"],
+                            "path": ["login"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Login Regular Member",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "pm.environment.set(\"member_token\", jsonData.access_token);"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\": \"member@example.com\",\n    \"password\": \"password\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/login",
+                            "host": ["{{base_url}}"],
+                            "path": ["login"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Authenticated User Info",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/user",
+                            "host": ["{{base_url}}"],
+                            "path": ["user"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Logout User",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{member_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/logout",
+                            "host": ["{{base_url}}"],
+                            "path": ["logout"]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "1. Teams Management",
+            "item": [
+                {
+                    "name": "Create Team (SUCCESS - By Team Owner)",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "if (jsonData.team && jsonData.team.id) {",
+                                    "    pm.environment.set(\"team_id_owner\", jsonData.team.id);",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{owner_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Owner's Team\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/teams",
+                            "host": ["{{base_url}}"],
+                            "path": ["teams"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get All Teams (By Team Owner)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{owner_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/teams",
+                            "host": ["{{base_url}}"],
+                            "path": ["teams"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Specific Team (By Admin User)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/teams/{{team_id_owner}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["teams", "{{team_id_owner}}"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Team (By Team Owner)",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{owner_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Owner's Team (Updated)\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/teams/{{team_id_owner}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["teams", "{{team_id_owner}}"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Add Member to Team (By Team Owner)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{owner_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"user_id\": {{member_user_id}}, \n    \"role\": \"member\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/teams/{{team_id_owner}}/members",
+                            "host": ["{{base_url}}"],
+                            "path": ["teams", "{{team_id_owner}}", "members"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Member Role (By Admin User)",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"role\": \"team_admin\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/teams/{{team_id_owner}}/members/{{member_user_id}}",
+                            "host": ["{{base_url}}"],
+                            "path": [
+                                "teams",
+                                "{{team_id_owner}}",
+                                "members",
+                                "{{member_user_id}}"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Remove Member (By Team Owner)",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{owner_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/teams/{{team_id_owner}}/members/{{member_user_id}}",
+                            "host": ["{{base_url}}"],
+                            "path": [
+                                "teams",
+                                "{{team_id_owner}}",
+                                "members",
+                                "{{member_user_id}}"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Team (By Team Owner)",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{owner_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/teams/{{team_id_owner}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["teams", "{{team_id_owner}}"]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "2. Projects Management",
+            "item": [
+                {
+                    "name": "Create Project (By Project Manager)",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "if (jsonData.project && jsonData.project.id) {",
+                                    "    pm.environment.set(\"project_id_1\", jsonData.project.id);",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{pm_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"team_id\": {{team_id_owner}},\n    \"name\": \"Website Redesign Project\",\n    \"description\": \"Redesign the company website for better UX.\",\n    \"due_date\": \"2025-12-31\",\n    \"status\": \"in_progress\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/projects",
+                            "host": ["{{base_url}}"],
+                            "path": ["projects"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get All Projects (By Project Manager)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{pm_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/projects",
+                            "host": ["{{base_url}}"],
+                            "path": ["projects"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Specific Project (By Project Manager)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{pm_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/projects/{{project_id_1}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["projects", "{{project_id_1}}"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Project (By Project Manager)",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{pm_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Website Redesign Project (Updated)\",\n    \"status\": \"completed\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/projects/{{project_id_1}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["projects", "{{project_id_1}}"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Add Member to Project (By Project Manager)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{pm_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"user_id\": {{member_user_id}},\n    \"role\": \"member\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/projects/{{project_id_1}}/members",
+                            "host": ["{{base_url}}"],
+                            "path": ["projects", "{{project_id_1}}", "members"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Project Member Role (By Project Manager)",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{pm_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"role\": \"project_manager\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/projects/{{project_id_1}}/members/{{member_user_id}}",
+                            "host": ["{{base_url}}"],
+                            "path": [
+                                "projects",
+                                "{{project_id_1}}",
+                                "members",
+                                "{{member_user_id}}"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Remove Project Member (By Project Manager)",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{pm_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/projects/{{project_id_1}}/members/{{member_user_id}}",
+                            "host": ["{{base_url}}"],
+                            "path": [
+                                "projects",
+                                "{{project_id_1}}",
+                                "members",
+                                "{{member_user_id}}"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Project (By Project Manager)",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{pm_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/projects/{{project_id_1}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["projects", "{{project_id_1}}"]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "3. Tasks Management",
+            "item": [
+                {
+                    "name": "Create Task (By Project Manager)",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "if (jsonData.task && jsonData.task.id) {",
+                                    "    pm.environment.set(\"task_id_1\", jsonData.task.id);",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{pm_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"project_id\": {{project_id_1}},\n    \"name\": \"Design Homepage Mockups\",\n    \"description\": \"Create wireframes and mockups for the new homepage.\",\n    \"assigned_to_user_id\": {{member_user_id}},\n    \"status\": \"open\",\n    \"priority\": \"high\",\n    \"due_date\": \"2025-12-31\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/tasks",
+                            "host": ["{{base_url}}"],
+                            "path": ["tasks"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get All Tasks (By Project Manager)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{pm_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/tasks",
+                            "host": ["{{base_url}}"],
+                            "path": ["tasks"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Specific Task (By Project Manager)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{pm_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/tasks/{{task_id_1}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["tasks", "{{task_id_1}}"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Task (By Project Manager)",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{pm_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"status\": \"completed\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/tasks/{{task_id_1}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["tasks", "{{task_id_1}}"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Task (By Project Manager)",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{pm_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/tasks/{{task_id_1}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["tasks", "{{task_id_1}}"]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "4. Comments Management",
+            "item": [
+                {
+                    "name": "Create Comment (By Project Manager on Project)",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "if (jsonData.comment && jsonData.comment.id) {",
+                                    "    pm.environment.set(\"comment_id_1\", jsonData.comment.id);",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{pm_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"content\": \"This is a comment on the project.\",\n    \"commentable_type\": \"project\",\n    \"commentable_id\": {{project_id_1}}\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/comments",
+                            "host": ["{{base_url}}"],
+                            "path": ["comments"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get All Comments for Project (By Project Manager)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{pm_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/comments?commentable_type=project&commentable_id={{project_id_1}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["comments"],
+                            "query": [
+                                {
+                                    "key": "commentable_type",
+                                    "value": "project"
+                                },
+                                {
+                                    "key": "commentable_id",
+                                    "value": "{{project_id_1}}"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Specific Comment (By Project Manager)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{pm_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/comments/{{comment_id_1}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["comments", "{{comment_id_1}}"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Comment (By Project Manager)",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{pm_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"content\": \"Updated comment content by PM.\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/comments/{{comment_id_1}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["comments", "{{comment_id_1}}"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Comment (By Project Manager)",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{pm_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/comments/{{comment_id_1}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["comments", "{{comment_id_1}}"]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "5. Attachments Management",
+            "item": [
+                {
+                    "name": "Create Attachment (By Project Manager on Project)",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "if (jsonData.attachment && jsonData.attachment.id) {",
+                                    "    pm.environment.set(\"attachment_id_1\", jsonData.attachment.id);",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{pm_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "file",
+                                    "type": "file",
+                                    "src": "/C:/path/to/your/test_file.txt",
+                                    "description": "Replace with a valid path to a small test file (e.g., C:/temp/test.txt)"
+                                },
+                                {
+                                    "key": "attachable_type",
+                                    "value": "project",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "attachable_id",
+                                    "value": "{{project_id_1}}",
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/attachments",
+                            "host": ["{{base_url}}"],
+                            "path": ["attachments"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get All Attachments for Project (By Project Manager)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{pm_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/attachments?attachable_type=project&attachable_id={{project_id_1}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["attachments"],
+                            "query": [
+                                {
+                                    "key": "attachable_type",
+                                    "value": "project"
+                                },
+                                {
+                                    "key": "attachable_id",
+                                    "value": "{{project_id_1}}"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Download Specific Attachment (By Project Manager)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{pm_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/attachments/{{attachment_id_1}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["attachments", "{{attachment_id_1}}"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Attachment Metadata (By Project Manager)",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{pm_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"file_name\": \"Updated_Project_Doc.pdf\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/attachments/{{attachment_id_1}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["attachments", "{{attachment_id_1}}"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Attachment (By Project Manager)",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{pm_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/attachments/{{attachment_id_1}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["attachments", "{{attachment_id_1}}"]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "6. Notifications Management",
+            "item": [
+                {
+                    "name": "Get All Notifications (By Project Manager)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{pm_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/notifications",
+                            "host": ["{{base_url}}"],
+                            "path": ["notifications"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Specific Notification (By Project Manager)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{pm_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/notifications/{{notification_id_1}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["notifications", "{{notification_id_1}}"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Mark Notification as Read (By Project Manager)",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{pm_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/notifications/{{notification_id_1}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["notifications", "{{notification_id_1}}"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Unread Notifications Count (By Project Manager)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{pm_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/notifications/unread-count",
+                            "host": ["{{base_url}}"],
+                            "path": ["notifications", "unread-count"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Mark All Notifications as Read (By Project Manager)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{pm_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/notifications/mark-all-as-read",
+                            "host": ["{{base_url}}"],
+                            "path": ["notifications", "mark-all-as-read"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Notification (By Project Manager)",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{pm_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/notifications/{{notification_id_1}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["notifications", "{{notification_id_1}}"]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "7. Failed Cases / Unauthorized Access Tests",
+            "item": [
+                {
+                    "name": "Create User (FAIL - Not Admin)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{member_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Unauthorized User\",\n    \"email\": \"unauth@example.com\",\n    \"password\": \"password\",\n    \"role\": \"member\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/users",
+                            "host": ["{{base_url}}"],
+                            "path": ["users"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Team (FAIL - Invalid Name)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{owner_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/teams",
+                            "host": ["{{base_url}}"],
+                            "path": ["teams"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Specific Team (FAIL - Unauthorized Access)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{member_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/teams/{{team_id_owner}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["teams", "{{team_id_owner}}"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Project (FAIL - Unauthorized Member)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{member_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"team_id\": {{team_id_owner}},\n    \"name\": \"Unauthorized Project\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/projects",
+                            "host": ["{{base_url}}"],
+                            "path": ["projects"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Task (FAIL - Unauthorized Member to Project)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{member_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"project_id\": {{project_id_unauthorized}}, \n    \"name\": \"Unauthorized Task\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/tasks",
+                            "host": ["{{base_url}}"],
+                            "path": ["tasks"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Comment (FAIL - Unauthorized Member to Project/Task)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{member_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"content\": \"Unauthorized comment.\",\n    \"commentable_type\": \"project\",\n    \"commentable_id\": {{project_id_unauthorized}}\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/comments",
+                            "host": ["{{base_url}}"],
+                            "path": ["comments"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Attachment (FAIL - Unauthorized Member)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{member_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "file",
+                                    "type": "file",
+                                    "src": "/C:/path/to/your/test_file.txt"
+                                },
+                                {
+                                    "key": "attachable_type",
+                                    "value": "project",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "attachable_id",
+                                    "value": "{{project_id_unauthorized}}",
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/attachments",
+                            "host": ["{{base_url}}"],
+                            "path": ["attachments"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Specific Notification (FAIL - Unauthorized User)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{member_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/notifications/{{notification_id_1}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["notifications", "{{notification_id_1}}"]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        }
+    ],
+    "event": [
+        {
+            "listen": "prerequest",
+            "script": {
+                "type": "text/javascript",
+                "exec": [""]
+            }
+        },
+        {
+            "listen": "test",
+            "script": {
+                "type": "text/javascript",
+                "exec": [""]
+            }
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://127.0.0.1:8000/api",
+            "type": "string"
+        },
+        {
+            "key": "admin_token",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "owner_token",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "pm_token",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "member_token",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "member_user_id",
+            "value": "",
+            "type": "string",
+            "description": "ID of the Regular Member user."
+        },
+        {
+            "key": "pm_user_id",
+            "value": "",
+            "type": "string",
+            "description": "ID of the Project Manager user."
+        },
+        {
+            "key": "owner_user_id",
+            "value": "",
+            "type": "string",
+            "description": "ID of the Team Owner user."
+        },
+        {
+            "key": "team_id_owner",
+            "value": "",
+            "type": "string",
+            "description": "ID of a team owned by the Team Owner user. Needed for project creation."
+        },
+        {
+            "key": "project_id_1",
+            "value": "",
+            "type": "string",
+            "description": "ID of a project where tasks/comments/attachments will be created. Ensure relevant users have access."
+        },
+        {
+            "key": "task_id_1",
+            "value": "",
+            "type": "string",
+            "description": "ID of a task where comments/attachments will be created."
+        },
+        {
+            "key": "comment_id_1",
+            "value": "",
+            "type": "string",
+            "description": "ID of a comment where attachments will be created."
+        },
+        {
+            "key": "attachment_id_1",
+            "value": "",
+            "type": "string",
+            "description": "ID of the first attachment created (on a project)."
+        },
+        {
+            "key": "notification_id_1",
+            "value": "",
+            "type": "string",
+            "description": "ID of a notification (needs to be created manually or via system events)."
+        },
+        {
+            "key": "project_id_unauthorized",
+            "value": "",
+            "type": "string",
+            "description": "ID of a project not accessible by Regular Member (for failed tests)."
+        }
+    ]
+}
